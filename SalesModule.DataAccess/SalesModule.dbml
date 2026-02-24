@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="SalesModuleDB" Class="SalesModuleDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-S2F6DIB;Initial Catalog=SalesModuleDB;Integrated Security=True" SettingsObjectName="SalesModule.DataAccess.Properties.Settings" SettingsPropertyName="SalesModuleDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Customer" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Association Name="Customer_Invoice" Member="Invoices" ThisKey="Id" OtherKey="CustomerId" Type="Invoice" />
+      <Association Name="Customer_Payment" Member="Payments" ThisKey="Id" OtherKey="CustomerId" Type="Payment" />
+      <Association Name="Customer_SalesOrder" Member="SalesOrders" ThisKey="Id" OtherKey="CustomerId" Type="SalesOrder" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GLTransaction" Member="GLTransactions">
+    <Type Name="GLTransaction">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="GLTransaction_GLTransactionLine" Member="GLTransactionLines" ThisKey="Id" OtherKey="GLTransactionId" Type="GLTransactionLine" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GLTransactionLine" Member="GLTransactionLines">
+    <Type Name="GLTransactionLine">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GLTransactionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Account" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Debit" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Credit" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="GLTransaction_GLTransactionLine" Member="GLTransaction" ThisKey="GLTransactionId" OtherKey="Id" Type="GLTransaction" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Invoice" Member="Invoices">
+    <Type Name="Invoice">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SalesOrderId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="NetTotal" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TaxTotal" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="GrossTotal" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Invoice_InvoiceLine" Member="InvoiceLines" ThisKey="Id" OtherKey="InvoiceId" Type="InvoiceLine" />
+      <Association Name="Invoice_Payment" Member="Payments" ThisKey="Id" OtherKey="InvoiceId" Type="Payment" />
+      <Association Name="Customer_Invoice" Member="Customer" ThisKey="CustomerId" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+      <Association Name="SalesOrder_Invoice" Member="SalesOrder" ThisKey="SalesOrderId" OtherKey="Id" Type="SalesOrder" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.InvoiceLine" Member="InvoiceLines">
+    <Type Name="InvoiceLine">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="InvoiceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ItemId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Qty" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="LineTotal" Type="System.Decimal" DbType="Decimal(29,2)" IsDbGenerated="true" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="TaxAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Invoice_InvoiceLine" Member="Invoice" ThisKey="InvoiceId" OtherKey="Id" Type="Invoice" IsForeignKey="true" />
+      <Association Name="Item_InvoiceLine" Member="Item" ThisKey="ItemId" OtherKey="Id" Type="Item" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Item" Member="Items">
+    <Type Name="Item">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="OnHandQuantity" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Item_InvoiceLine" Member="InvoiceLines" ThisKey="Id" OtherKey="ItemId" Type="InvoiceLine" />
+      <Association Name="Item_SalesOrderLine" Member="SalesOrderLines" ThisKey="Id" OtherKey="ItemId" Type="SalesOrderLine" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Payment" Member="Payments">
+    <Type Name="Payment">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="InvoiceId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="Customer_Payment" Member="Customer" ThisKey="CustomerId" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+      <Association Name="Invoice_Payment" Member="Invoice" ThisKey="InvoiceId" OtherKey="Id" Type="Invoice" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SalesOrder" Member="SalesOrders">
+    <Type Name="SalesOrder">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Association Name="SalesOrder_Invoice" Member="Invoices" ThisKey="Id" OtherKey="SalesOrderId" Type="Invoice" />
+      <Association Name="SalesOrder_SalesOrderLine" Member="SalesOrderLines" ThisKey="Id" OtherKey="SalesOrderId" Type="SalesOrderLine" />
+      <Association Name="Customer_SalesOrder" Member="Customer" ThisKey="CustomerId" OtherKey="Id" Type="Customer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SalesOrderLine" Member="SalesOrderLines">
+    <Type Name="SalesOrderLine">
+      <Column Name="SalesOrderId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ItemId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Qty" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UnitPrice" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Item_SalesOrderLine" Member="Item" ThisKey="ItemId" OtherKey="Id" Type="Item" IsForeignKey="true" />
+      <Association Name="SalesOrder_SalesOrderLine" Member="SalesOrder" ThisKey="SalesOrderId" OtherKey="Id" Type="SalesOrder" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.sp_PostInvoice" Method="sp_PostInvoice">
+    <Parameter Name="InvoiceId" Parameter="invoiceId" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>

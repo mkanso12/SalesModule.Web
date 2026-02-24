@@ -1,0 +1,10 @@
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\bin\Debug\SalesModule.BusinessLogic.dll
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\bin\Debug\SalesModule.BusinessLogic.pdb
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\bin\Debug\SalesModule.DataAccess.dll
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\bin\Debug\SalesModule.DataAccess.pdb
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\bin\Debug\SalesModule.DataAccess.dll.config
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\obj\Debug\SalesModule.BusinessLogic.csproj.AssemblyReference.cache
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\obj\Debug\SalesModule.BusinessLogic.csproj.CoreCompileInputs.cache
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\obj\Debug\SalesModule.BusinessLogic.csproj.CopyComplete
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\obj\Debug\SalesModule.BusinessLogic.dll
+C:\Users\mahdi\source\repos\SalesModule.Web\SalesModule.BusinessLogic\obj\Debug\SalesModule.BusinessLogic.pdb
