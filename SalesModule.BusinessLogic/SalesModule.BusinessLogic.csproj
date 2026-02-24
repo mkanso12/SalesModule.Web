@@ -46,6 +46,8 @@
     <Compile Include="Class1.cs" />
     <Compile Include="IInvoiceService.cs" />
     <Compile Include="InvoiceService.cs" />
+    <Compile Include="IPaymentService.cs" />
+    <Compile Include="PaymentService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

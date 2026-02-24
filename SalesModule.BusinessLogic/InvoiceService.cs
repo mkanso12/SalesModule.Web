@@ -17,7 +17,15 @@ namespace SalesModule.BusinessLogic
 
         public void PostInvoice(int invoiceId)
         {
+            if (invoiceId <= 0)
+                throw new ArgumentException("Invoice ID must be a positive integer.", nameof(invoiceId));
+            var invoice = _invoiceDataAccess.GetInvoice(invoiceId);
+            if (invoice == null)
+                throw new InvalidOperationException($"Invoice with ID {invoiceId} not found.");
+            if (invoice.Status != "Open")
+                throw new InvalidOperationException($"Invoice {invoiceId} is not in Open state (current status: {invoice.Status}).");
             _invoiceDataAccess.PostInvoice(invoiceId);
+
         }
 
         public Invoice GetInvoice(int invoiceId)
