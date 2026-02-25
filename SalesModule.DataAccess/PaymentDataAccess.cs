@@ -28,5 +28,25 @@ namespace SalesModule.DataAccess
                 return db.Payments.FirstOrDefault(p => p.Id == id);
             }
         }
+        public List<Payment> GetAll()
+        {
+            using (var db = new SalesModuleDataContext(_connectionString))
+            {
+                var loadOptions = new DataLoadOptions();
+                loadOptions.LoadWith<Payment>(p => p.Customer);
+                loadOptions.LoadWith<Payment>(p => p.Invoice);
+                db.LoadOptions = loadOptions;
+                return db.Payments.ToList();
+            }
+        }
+
+        public void Insert(Payment payment)
+        {
+            using (var db = new SalesModuleDataContext(_connectionString))
+            {
+                db.Payments.InsertOnSubmit(payment);
+                db.SubmitChanges();
+            }
+        }
     }
 }

@@ -10,5 +10,9 @@ namespace SalesModule.DataAccess
     {
         void PostInvoice(int invoiceId);
         Invoice GetInvoice(int invoiceId);
+        List<Invoice> GetAll();
+        void Insert(Invoice invoice, List<InvoiceLine> lines);
+        List<Invoice> GetOpenInvoicesByCustomer(int customerId);
+        void UpdateStatus(int invoiceId, string status, decimal? amountPaid = null);
     }
 }

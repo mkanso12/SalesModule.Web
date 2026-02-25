@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace SalesModule.DataAccess
 {
-    public interface IPaymentDataAccess
+    public interface IGLTransactionDataAccess
     {
-        Payment GetPayment(int id);
-        List<Payment> GetAll();
-        void Insert(Payment payment);
+        void Insert(GLTransaction transaction, List<GLTransactionLine> lines);
     }
 }

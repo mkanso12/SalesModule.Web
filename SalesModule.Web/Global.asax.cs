@@ -1,14 +1,10 @@
 ﻿using SalesModule.BusinessLogic;
 using SalesModule.DataAccess;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Web;
 using System.Web.Optimization;
 using System.Web.Routing;
-using System.Web.Security;
-using System.Web.SessionState;
 using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
@@ -19,7 +15,6 @@ namespace SalesModule.Web
     {
         void Application_Start(object sender, EventArgs e)
         {
-            // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
@@ -27,15 +22,47 @@ namespace SalesModule.Web
 
             string connString = ConfigurationManager.ConnectionStrings["SalesModuleDB"].ConnectionString;
 
-            // Register IInvoiceDataAccess with its implementation
+            // DataAccess registrations
+            container.RegisterType<ICustomerDataAccess, CustomerDataAccess>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(connString)
+            );
             container.RegisterType<IInvoiceDataAccess, InvoiceDataAccess>(
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(connString)
             );
+            container.RegisterType<IPaymentDataAccess, PaymentDataAccess>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(connString)
+            );
+            container.RegisterType<IItemDataAccess, ItemDataAccess>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(connString)
+            );
+            container.RegisterType<ISalesOrderDataAccess, SalesOrderDataAccess>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(connString)
+            );
 
-            // Register IInvoiceService
+            // BusinessLogic registrations
+            container.RegisterType<ICustomerService, CustomerService>(
+                new ContainerControlledLifetimeManager()
+            );
             container.RegisterType<IInvoiceService, InvoiceService>(
                 new ContainerControlledLifetimeManager()
+            );
+            container.RegisterType<IPaymentService, PaymentService>(
+                new ContainerControlledLifetimeManager()
+            );
+            container.RegisterType<IItemService, ItemService>(
+                new ContainerControlledLifetimeManager()
+            );
+            container.RegisterType<ISalesOrderService, SalesOrderService>(
+                new ContainerControlledLifetimeManager()
+            );
+            container.RegisterType<IGLTransactionDataAccess, GLTransactionDataAccess>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(connString)
             );
 
             Application["UnityContainer"] = container;

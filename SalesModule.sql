@@ -1,0 +1,352 @@
+﻿USE [master]
+GO
+/****** Object:  Database [SalesModuleDB]    Script Date: 25/02/2026 5:01:18 AM ******/
+CREATE DATABASE [SalesModuleDB]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'SalesModuleDB', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\SalesModuleDB.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'SalesModuleDB_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL15.MSSQLSERVER\MSSQL\DATA\SalesModuleDB_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [SalesModuleDB] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [SalesModuleDB].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [SalesModuleDB] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [SalesModuleDB] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [SalesModuleDB] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [SalesModuleDB] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [SalesModuleDB] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET RECOVERY FULL 
+GO
+ALTER DATABASE [SalesModuleDB] SET  MULTI_USER 
+GO
+ALTER DATABASE [SalesModuleDB] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [SalesModuleDB] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [SalesModuleDB] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [SalesModuleDB] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [SalesModuleDB] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [SalesModuleDB] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'SalesModuleDB', N'ON'
+GO
+ALTER DATABASE [SalesModuleDB] SET QUERY_STORE = OFF
+GO
+USE [SalesModuleDB]
+GO
+/****** Object:  Table [dbo].[Customer]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Customer](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[GLTransaction]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GLTransaction](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Date] [datetime] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[GLTransactionLine]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[GLTransactionLine](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[GLTransactionId] [int] NOT NULL,
+	[Account] [nvarchar](20) NOT NULL,
+	[Debit] [decimal](18, 2) NOT NULL,
+	[Credit] [decimal](18, 2) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Invoice]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Invoice](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[SalesOrderId] [int] NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[Date] [datetime] NOT NULL,
+	[NetTotal] [decimal](18, 2) NOT NULL,
+	[TaxTotal] [decimal](18, 2) NOT NULL,
+	[GrossTotal] [decimal](18, 2) NOT NULL,
+	[Status] [nvarchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[InvoiceLine]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[InvoiceLine](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[InvoiceId] [int] NOT NULL,
+	[ItemId] [int] NOT NULL,
+	[Qty] [int] NOT NULL,
+	[UnitPrice] [decimal](18, 2) NOT NULL,
+	[LineTotal]  AS ([Qty]*[UnitPrice]) PERSISTED,
+	[TaxAmount] [decimal](18, 2) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Item]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Item](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[UnitPrice] [decimal](18, 2) NOT NULL,
+	[OnHandQuantity] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Payment]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Payment](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[Date] [datetime] NOT NULL,
+	[Amount] [decimal](18, 2) NOT NULL,
+	[InvoiceId] [int] NULL,
+	[Status] [nvarchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SalesOrder]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SalesOrder](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[CustomerId] [int] NOT NULL,
+	[Date] [datetime] NOT NULL,
+	[Status] [nvarchar](20) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[SalesOrderLine]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[SalesOrderLine](
+	[SalesOrderId] [int] NOT NULL,
+	[ItemId] [int] NOT NULL,
+	[Qty] [int] NOT NULL,
+	[UnitPrice] [decimal](18, 2) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[SalesOrderId] ASC,
+	[ItemId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_Invoice_CustomerId_Status]    Script Date: 25/02/2026 5:01:18 AM ******/
+CREATE NONCLUSTERED INDEX [IX_Invoice_CustomerId_Status] ON [dbo].[Invoice]
+(
+	[CustomerId] ASC,
+	[Status] ASC
+)
+INCLUDE([GrossTotal]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_InvoiceLine_ItemId]    Script Date: 25/02/2026 5:01:18 AM ******/
+CREATE NONCLUSTERED INDEX [IX_InvoiceLine_ItemId] ON [dbo].[InvoiceLine]
+(
+	[ItemId] ASC
+)
+INCLUDE([Qty]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[GLTransaction] ADD  DEFAULT (getdate()) FOR [Date]
+GO
+ALTER TABLE [dbo].[Invoice] ADD  DEFAULT (getdate()) FOR [Date]
+GO
+ALTER TABLE [dbo].[Invoice] ADD  DEFAULT ('Open') FOR [Status]
+GO
+ALTER TABLE [dbo].[Item] ADD  DEFAULT ((0)) FOR [OnHandQuantity]
+GO
+ALTER TABLE [dbo].[Payment] ADD  DEFAULT (getdate()) FOR [Date]
+GO
+ALTER TABLE [dbo].[Payment] ADD  DEFAULT ('Open') FOR [Status]
+GO
+ALTER TABLE [dbo].[SalesOrder] ADD  DEFAULT (getdate()) FOR [Date]
+GO
+ALTER TABLE [dbo].[SalesOrder] ADD  DEFAULT ('Open') FOR [Status]
+GO
+ALTER TABLE [dbo].[GLTransactionLine]  WITH CHECK ADD FOREIGN KEY([GLTransactionId])
+REFERENCES [dbo].[GLTransaction] ([Id])
+GO
+ALTER TABLE [dbo].[Invoice]  WITH CHECK ADD FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[Customer] ([Id])
+GO
+ALTER TABLE [dbo].[Invoice]  WITH CHECK ADD FOREIGN KEY([SalesOrderId])
+REFERENCES [dbo].[SalesOrder] ([Id])
+GO
+ALTER TABLE [dbo].[InvoiceLine]  WITH CHECK ADD FOREIGN KEY([InvoiceId])
+REFERENCES [dbo].[Invoice] ([Id])
+GO
+ALTER TABLE [dbo].[InvoiceLine]  WITH CHECK ADD FOREIGN KEY([ItemId])
+REFERENCES [dbo].[Item] ([Id])
+GO
+ALTER TABLE [dbo].[Payment]  WITH CHECK ADD FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[Customer] ([Id])
+GO
+ALTER TABLE [dbo].[Payment]  WITH CHECK ADD FOREIGN KEY([InvoiceId])
+REFERENCES [dbo].[Invoice] ([Id])
+GO
+ALTER TABLE [dbo].[SalesOrder]  WITH CHECK ADD FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[Customer] ([Id])
+GO
+ALTER TABLE [dbo].[SalesOrderLine]  WITH CHECK ADD FOREIGN KEY([ItemId])
+REFERENCES [dbo].[Item] ([Id])
+GO
+ALTER TABLE [dbo].[SalesOrderLine]  WITH CHECK ADD FOREIGN KEY([SalesOrderId])
+REFERENCES [dbo].[SalesOrder] ([Id])
+GO
+/****** Object:  StoredProcedure [dbo].[sp_PostInvoice]    Script Date: 25/02/2026 5:01:18 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_PostInvoice]
+    @InvoiceId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    BEGIN TRY
+        BEGIN TRANSACTION;
+
+        IF NOT EXISTS (SELECT 1 FROM Invoice WHERE Id = @InvoiceId AND Status = 'Open')
+        BEGIN
+            RAISERROR('Invoice not found or already posted.', 16, 1);
+            ROLLBACK;
+            RETURN;
+        END
+
+        UPDATE i
+        SET OnHandQuantity = i.OnHandQuantity - il.Qty
+        FROM Item i
+        INNER JOIN InvoiceLine il ON i.Id = il.ItemId
+        WHERE il.InvoiceId = @InvoiceId;
+
+        DECLARE @GLTransId INT;
+        INSERT INTO GLTransaction (Date) VALUES (GETDATE());
+        SET @GLTransId = SCOPE_IDENTITY();
+
+        DECLARE @GrossTotal DECIMAL(18,2), @NetTotal DECIMAL(18,2), @TaxTotal DECIMAL(18,2);
+        SELECT @GrossTotal = GrossTotal, @NetTotal = NetTotal, @TaxTotal = TaxTotal
+        FROM Invoice WHERE Id = @InvoiceId;
+
+        INSERT INTO GLTransactionLine (GLTransactionId, Account, Debit, Credit)
+        VALUES
+            (@GLTransId, '1100 AR', @GrossTotal, 0),
+            (@GLTransId, '4000 Sales', 0, @NetTotal),
+            (@GLTransId, '2100 VAT Payable', 0, @TaxTotal);
+
+        UPDATE Invoice SET Status = 'Posted' WHERE Id = @InvoiceId;
+
+        COMMIT TRANSACTION;
+    END TRY
+    BEGIN CATCH
+        IF @@TRANCOUNT > 0 ROLLBACK;
+        THROW;
+    END CATCH
+END
+GO
+USE [master]
+GO
+ALTER DATABASE [SalesModuleDB] SET  READ_WRITE 
+GO

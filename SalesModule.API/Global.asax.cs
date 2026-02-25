@@ -55,7 +55,18 @@ namespace SalesModule.API
             container.RegisterType<IPaymentService, PaymentService>(
                 new ContainerControlledLifetimeManager()
             );
+            container.RegisterType<ISalesOrderDataAccess, SalesOrderDataAccess>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionConstructor(connString)
+            );
 
+            container.RegisterType<ISalesOrderService, SalesOrderService>(
+                new ContainerControlledLifetimeManager()
+            );
+            container.RegisterType<IGLTransactionDataAccess, GLTransactionDataAccess>(
+             new ContainerControlledLifetimeManager(),
+             new InjectionConstructor(connString)
+            );
             container.RegisterInstance<IMapper>(mapper);
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
