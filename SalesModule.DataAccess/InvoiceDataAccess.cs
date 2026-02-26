@@ -74,6 +74,18 @@ namespace SalesModule.DataAccess
                          .ToList();
             }
         }
+        public List<Invoice> GetPostedInvoicesByCustomer(int customerId)
+        {
+            using (var db = new SalesModuleDataContext(_connectionString))
+            {
+                var loadOptions = new DataLoadOptions();
+                loadOptions.LoadWith<Invoice>(i => i.Customer);
+                db.LoadOptions = loadOptions;
+                return db.Invoices
+                         .Where(i => i.CustomerId == customerId && i.Status == "Posted")
+                         .ToList();
+            }
+        }
 
         public void UpdateStatus(int invoiceId, string status, decimal? amountPaid = null)
         {

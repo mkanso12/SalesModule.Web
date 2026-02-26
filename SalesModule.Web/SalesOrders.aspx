@@ -114,6 +114,10 @@
                             <i class="bi bi-plus"></i> Add Line
                         </asp:LinkButton>
                     </div>
+                    <div class="col-md-2">
+                          <label>net total</label>
+                         <asp:Label ID="lblNetTotal" runat="server" CssClass="mt-2 d-block" Text ="0.0"></asp:Label>
+                    </div>
                 </div>
 
                 <div class="mt-3">

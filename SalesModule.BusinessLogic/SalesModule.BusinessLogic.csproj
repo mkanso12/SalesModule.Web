@@ -46,7 +46,9 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="CustomerService.cs" />
+    <Compile Include="GLTransactionService.cs" />
     <Compile Include="ICustomerService.cs" />
+    <Compile Include="IGLTransactionService.cs" />
     <Compile Include="IInvoiceService.cs" />
     <Compile Include="IItemService.cs" />
     <Compile Include="InvoiceService.cs" />

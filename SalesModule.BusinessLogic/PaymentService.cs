@@ -71,7 +71,9 @@ namespace SalesModule.BusinessLogic
 
             var transaction = new GLTransaction
             {
-                Date = payment.Date
+                Date = payment.Date,
+                Reference = "payment-"+ payment.Id
+                
             };
 
             var lines = new List<GLTransactionLine>

@@ -9,5 +9,6 @@ namespace SalesModule.DataAccess
     public interface IGLTransactionDataAccess
     {
         void Insert(GLTransaction transaction, List<GLTransactionLine> lines);
+        List<GLTransaction> GetAll();
     }
 }

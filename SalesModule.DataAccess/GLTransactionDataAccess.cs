@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 
 namespace SalesModule.DataAccess
@@ -28,6 +29,16 @@ namespace SalesModule.DataAccess
                     db.GLTransactionLines.InsertOnSubmit(line);
                 }
                 db.SubmitChanges();
+            }
+        }
+        public List<GLTransaction> GetAll()
+        {
+            using (var db = new SalesModuleDataContext(_connectionString))
+            {
+                var loadOptions = new DataLoadOptions();
+                loadOptions.LoadWith<GLTransaction>(t => t.GLTransactionLines);
+                db.LoadOptions = loadOptions;
+                return db.GLTransactions.OrderByDescending(t => t.Date).ToList();
             }
         }
     }

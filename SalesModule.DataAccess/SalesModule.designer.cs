@@ -349,6 +349,8 @@ namespace SalesModule.DataAccess
 		
 		private System.DateTime _Date;
 		
+		private string _Reference;
+		
 		private EntitySet<GLTransactionLine> _GLTransactionLines;
 		
     #region Extensibility Method Definitions
@@ -359,6 +361,8 @@ namespace SalesModule.DataAccess
     partial void OnIdChanged();
     partial void OnDateChanging(System.DateTime value);
     partial void OnDateChanged();
+    partial void OnReferenceChanging(string value);
+    partial void OnReferenceChanged();
     #endregion
 		
 		public GLTransaction()
@@ -403,6 +407,26 @@ namespace SalesModule.DataAccess
 					this._Date = value;
 					this.SendPropertyChanged("Date");
 					this.OnDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reference", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Reference
+		{
+			get
+			{
+				return this._Reference;
+			}
+			set
+			{
+				if ((this._Reference != value))
+				{
+					this.OnReferenceChanging(value);
+					this.SendPropertyChanging();
+					this._Reference = value;
+					this.SendPropertyChanged("Reference");
+					this.OnReferenceChanged();
 				}
 			}
 		}

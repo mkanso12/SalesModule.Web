@@ -13,6 +13,7 @@
     <Type Name="GLTransaction">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Date" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+	  <Column Name="Reference" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Association Name="GLTransaction_GLTransactionLine" Member="GLTransactionLines" ThisKey="Id" OtherKey="GLTransactionId" Type="GLTransactionLine" />
     </Type>
   </Table>

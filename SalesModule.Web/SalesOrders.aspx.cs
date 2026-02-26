@@ -76,6 +76,7 @@ namespace SalesModule.Web
             var lines = Session["OrderLines"] as List<OrderLineDto> ?? new List<OrderLineDto>();
             gvLines.DataSource = lines;
             gvLines.DataBind();
+            UpdateNetTotal();
         }
 
         protected void ddlNewItem_SelectedIndexChanged(object sender, EventArgs e)
@@ -222,6 +223,11 @@ namespace SalesModule.Web
                     lblMessage.Text = "Delete error: " + ex.Message;
                 }
             }
+        }
+        private void UpdateNetTotal() {
+        var lines = Session["OrderLines"] as List<OrderLineDto> ?? new List<OrderLineDto>();
+            var netTotal = lines.Sum(x => x.Qty * x.UnitPrice);
+            lblNetTotal.Text = netTotal.ToString();
         }
     }
 }

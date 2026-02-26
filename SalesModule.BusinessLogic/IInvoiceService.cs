@@ -14,5 +14,6 @@ namespace SalesModule.BusinessLogic
         List<Invoice> GetAllInvoices();
         Invoice CreateInvoiceFromOrder(int salesOrderId);
         List<Invoice> GetOpenInvoicesByCustomer(int customerId);
+        List<Invoice> GetPostedInvoicesByCustomer(int customerId);
     }
 }

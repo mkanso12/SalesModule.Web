@@ -14,5 +14,6 @@ namespace SalesModule.DataAccess
         void Insert(Invoice invoice, List<InvoiceLine> lines);
         List<Invoice> GetOpenInvoicesByCustomer(int customerId);
         void UpdateStatus(int invoiceId, string status, decimal? amountPaid = null);
+        List<Invoice> GetPostedInvoicesByCustomer(int customerId);
     }
 }

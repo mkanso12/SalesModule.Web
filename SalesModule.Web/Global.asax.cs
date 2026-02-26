@@ -64,6 +64,9 @@ namespace SalesModule.Web
                 new ContainerControlledLifetimeManager(),
                 new InjectionConstructor(connString)
             );
+            container.RegisterType<IGLTransactionService, GLTransactionService>(
+                new ContainerControlledLifetimeManager()
+            );
 
             Application["UnityContainer"] = container;
         }

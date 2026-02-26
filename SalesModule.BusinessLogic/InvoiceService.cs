@@ -84,6 +84,12 @@ namespace SalesModule.BusinessLogic
                 throw new ArgumentException("Invalid customer ID.");
             return _invoiceDataAccess.GetOpenInvoicesByCustomer(customerId);
         }
+        public List<Invoice> GetPostedInvoicesByCustomer(int customerId)
+        {
+            if (customerId <= 0)
+                throw new ArgumentException("Invalid customer ID.");
+            return _invoiceDataAccess.GetPostedInvoicesByCustomer(customerId);
+        }
     }
 }
 

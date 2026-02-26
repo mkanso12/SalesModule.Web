@@ -17,7 +17,7 @@ namespace SalesModule.Web
         {
             var container = (IUnityContainer)Application["UnityContainer"];
             _paymentService = container.Resolve<IPaymentService>();
-            _customerService = container.Resolve<ICustomerService>();
+            _customerService = container.Resolve<ICustomerService>(); 
             _invoiceService = container.Resolve<IInvoiceService>();
 
             if (!IsPostBack)
@@ -48,7 +48,7 @@ namespace SalesModule.Web
             int customerId = Convert.ToInt32(ddlCustomer.SelectedValue);
             if (customerId > 0)
             {
-                var invoices = _invoiceService.GetOpenInvoicesByCustomer(customerId); 
+                var invoices = _invoiceService.GetPostedInvoicesByCustomer(customerId);
                 var list = invoices.Select(i => new
                 {
                     Id = i.Id,
@@ -67,17 +67,44 @@ namespace SalesModule.Web
 
         protected void btnRecordPayment_Click(object sender, EventArgs e)
         {
-            int customerId = Convert.ToInt32(ddlCustomer.SelectedValue);
-            int invoiceId = Convert.ToInt32(ddlInvoice.SelectedValue);
+            lblMessage.Text = ""; 
+
+            if (!int.TryParse(ddlCustomer.SelectedValue, out int customerId) || customerId <= 0)
+            {
+                lblMessage.Text = "Please select a customer.";
+                return;
+            }
+
+            if (!int.TryParse(ddlInvoice.SelectedValue, out int invoiceId) || invoiceId <= 0)
+            {
+                lblMessage.Text = "Please select an invoice.";
+                return;
+            }
+
             if (!decimal.TryParse(txtAmount.Text, out decimal amount) || amount <= 0)
             {
                 lblMessage.Text = "Please enter a valid positive amount.";
+                return;
+            }
+            var invoice = _invoiceService.GetInvoice(invoiceId); 
+
+            if (invoice == null)
+            {
+                lblMessage.Text = "Selected invoice was not found.";
+                return;
+            }
+            decimal invoiceTotal = invoice.GrossTotal;
+
+            if (amount > invoiceTotal)
+            {
+                lblMessage.Text = $"Amount cannot be greater than invoice total ({invoiceTotal:F2}).";
                 return;
             }
 
             try
             {
                 _paymentService.CreatePayment(customerId, invoiceId, amount);
+
                 lblMessage.Text = "Payment recorded successfully.";
                 BindPaymentsGrid();
                 ddlCustomer.SelectedIndex = 0;
